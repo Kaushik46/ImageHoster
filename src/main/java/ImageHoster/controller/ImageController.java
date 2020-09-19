@@ -1,8 +1,10 @@
 package ImageHoster.controller;
 
+import ImageHoster.model.Comment;
 import ImageHoster.model.Image;
 import ImageHoster.model.Tag;
 import ImageHoster.model.User;
+import ImageHoster.service.CommentService;
 import ImageHoster.service.ImageService;
 import ImageHoster.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,9 @@ public class ImageController {
     @Autowired
     private TagService tagService;
 
+    @Autowired
+    private CommentService commentService;
+
     //This method displays all the images in the user home page after successful login
     @RequestMapping("images")
     public String getUserImages(Model model) {
@@ -50,6 +55,8 @@ public class ImageController {
         Image image = imageService.getImage(id);
         model.addAttribute("image", image);
         model.addAttribute("tags", image.getTags());
+        List <Comment> comment= commentService.getAllComments(image.getId(),image.getTitle());
+        model.addAttribute("comments",comment);
         return "images/image";
     }
 
@@ -106,7 +113,8 @@ public class ImageController {
             String error="Only the user created should edit the image";
             model.addAttribute("image", image);
             model.addAttribute("editError",error);
-
+            List <Comment> comment= commentService.getAllComments(image.getId(),image.getTitle());
+            model.addAttribute("comments",comment);
             return "images/image";
         }
     }
@@ -161,6 +169,8 @@ public class ImageController {
             String error="Only the user created should delete the image";
             model.addAttribute("image", image);
             model.addAttribute("deleteError",error);
+            List <Comment> comment= commentService.getAllComments(image.getId(),image.getTitle());
+            model.addAttribute("comments",comment);
             return "images/image";
         }
     }
