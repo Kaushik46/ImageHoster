@@ -110,7 +110,7 @@ public class ImageController {
             return "images/edit";
         }
         else{
-            String error="Only the user created should edit the image";
+            String error="Only the owner of the image can edit the image";
             model.addAttribute("image", image);
             model.addAttribute("editError",error);
             List <Comment> comment= commentService.getAllComments(image.getId(),image.getTitle());
@@ -166,7 +166,7 @@ public class ImageController {
             return "redirect:/images";
         }
         else{
-            String error="Only the user created should delete the image";
+            String error="Only the owner of the image can delete the image";
             model.addAttribute("image", image);
             model.addAttribute("deleteError",error);
             List <Comment> comment= commentService.getAllComments(image.getId(),image.getTitle());
